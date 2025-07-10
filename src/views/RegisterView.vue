@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
@@ -46,11 +46,11 @@ const email = ref('')
 const password = ref('')
 const showPassword = ref(false)
 
-function submit() {
-    auth.register(email.value, password.value)
-}
+async function submit() {
+    await auth.register(email.value, password.value)
 
-watch(() => auth.user, (user) => {
-    if (user) router.push('/dashboard')
-})
+    if (auth.user && !auth.error) {
+        router.push('/dashboard')
+    }
+}
 </script>

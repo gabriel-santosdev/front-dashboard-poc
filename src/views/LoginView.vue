@@ -46,8 +46,9 @@ const email = ref('')
 const password = ref('')
 const showPassword = ref(false)
 
-function submit() {
-    auth.login(email.value, password.value)
+async function submit() {
+    await auth.login(email.value, password.value)
+    if (auth.user) router.push('/dashboard')
 }
 
 watch(() => auth.user, (user) => {

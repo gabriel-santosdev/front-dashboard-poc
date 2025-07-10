@@ -31,6 +31,6 @@ app.use(createPinia())
 app.use(vuetify)
 
 const auth = useAuthStore()
-auth.loadUserFromStorage()
+auth.fetchUser()
 
 app.mount('#app')

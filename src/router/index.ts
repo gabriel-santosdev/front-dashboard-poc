@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '@/views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import DashboardView from '@/views/DashboardView.vue'
-import { useAuthStore } from '@/stores/auth'
+import { authGuard } from './guards/authGuard'
 
 const routes = [
   { path: '/login', component: LoginView },
@@ -16,15 +16,7 @@ const router = createRouter({
   routes
 })
 
-// Middleware de autenticação
-router.beforeEach((to, _, next) => {
-  const auth = useAuthStore()
-
-  if (to.meta.requiresAuth && !auth.user) {
-    next('/login')
-  } else {
-    next()
-  }
-})
+// Aplica o guard global
+router.beforeEach(authGuard)
 
 export default router

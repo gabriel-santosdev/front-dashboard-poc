@@ -1,12 +1,7 @@
+// src/stores/auth.ts
 import { defineStore } from 'pinia'
-import api from '@/services/api'
-
-interface User {
-  email: string
-  token: string
-}
-
-const LOCAL_STORAGE_KEY = 'user'
+import { supabase } from '@/lib/supabase'
+import type { User } from '@supabase/supabase-js'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -18,38 +13,32 @@ export const useAuthStore = defineStore('auth', {
     async login(email: string, password: string) {
       this.loading = true
       this.error = null
-      try {
-        const res = await api.post('/login', { email, password })
-        this.user = { email, token: res.data.token }
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this.user))
-      } catch (err: any) {
-        this.error = err.response?.data?.error || 'Erro ao fazer login'
-      } finally {
-        this.loading = false
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+      if (error) {
+        this.error = error.message
+      } else {
+        this.user = data.user
       }
+      this.loading = false
     },
     async register(email: string, password: string) {
       this.loading = true
       this.error = null
-      try {
-        const res = await api.post('/register', { email, password })
-        this.user = { email, token: res.data.token }
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this.user))
-      } catch (err: any) {
-        this.error = err.response?.data?.error || 'Erro ao cadastrar'
-      } finally {
-        this.loading = false
+      const { data, error } = await supabase.auth.signUp({ email, password })
+      if (error) {
+        this.error = error.message
+      } else {
+        this.user = data.user
       }
+      this.loading = false
     },
-    logout() {
+    async logout() {
+      await supabase.auth.signOut()
       this.user = null
-      localStorage.removeItem(LOCAL_STORAGE_KEY)
     },
-    loadUserFromStorage() {
-      const data = localStorage.getItem(LOCAL_STORAGE_KEY)
-      if (data) {
-        this.user = JSON.parse(data)
-      }
+    async fetchUser() {
+      const { data } = await supabase.auth.getUser()
+      this.user = data.user
     }
   }
 })
