@@ -3,8 +3,8 @@ import { authGuard } from './guards/authGuard'
 import LoginView from '@/views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import DashboardView from '@/views/DashboardView.vue'
-import DespesasView from '@/views/DespesasView.vue'
 import MainLayout from '@/layouts/MainLayout.vue'
+import CadastrarDespesasView from '@/views/CadastrarDespesasView.vue'
 
 const routes = [
   { path: '/login', component: LoginView },
@@ -15,10 +15,15 @@ const routes = [
     meta: { requiresAuth: true },
     children: [
       { path: 'dashboard', name: 'dashboard', component: DashboardView },
-      { path: 'despesas', name: 'despesas', component: DespesasView }
+      {
+        path: '/despesas/cadastrar',
+        component: CadastrarDespesasView,
+        meta: { requiresAuth: true }
+      }
     ]
   },
   { path: '/dashboard', component: () => import('@/views/DashboardView.vue'), meta: { requiresAuth: true } },
+
 ]
 
 const router = createRouter({
