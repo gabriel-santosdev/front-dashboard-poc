@@ -1,4 +1,3 @@
-<!-- src/layouts/MainLayout.vue -->
 <template>
     <v-app>
         <v-navigation-drawer v-model="drawer" :rail="rail" permanent color="#f2f2f2" class="border-e"

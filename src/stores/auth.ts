@@ -1,4 +1,3 @@
-// src/stores/auth.ts
 import { defineStore } from 'pinia'
 import { supabase } from '@/lib/supabase'
 import type { User } from '@supabase/supabase-js'

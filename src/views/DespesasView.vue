@@ -30,17 +30,11 @@ const auth = useAuthStore()
 const despesasStore = useDespesasStore()
 
 
-// -----------------------
-// Campos do formulário
-// -----------------------
 const valor = ref<number | null>(null)
 const conta = ref<string | null>(null)
 const tipoDespesa = ref<string | null>(null)
 const date = ref<Date | null>(new Date())
 
-// -----------------------
-// Menu de data
-// -----------------------
 const menu = ref(false)
 const formRef = ref()
 
@@ -50,15 +44,10 @@ const formattedDate = computed(() =>
         : ''
 )
 
-// -----------------------
 // Listas
-// -----------------------
 const contas = ['Itau', 'Bradesco', 'Banco do Brasil', 'Santander']
 const tiposDespesa = ['Alimentação', 'Transporte', 'Lazer', 'Saúde', 'Outros']
 
-// -----------------------
-// Submissão
-// -----------------------
 async function submit() {
     if (!formRef.value?.validate() || !auth.user) return
 
