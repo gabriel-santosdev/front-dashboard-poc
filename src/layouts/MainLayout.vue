@@ -18,6 +18,7 @@
             <v-list density="compact" nav>
                 <v-list-item prepend-icon="mdi-view-dashboard" title="Dashboard" :to="{ name: 'dashboard' }" />
                 <v-list-item prepend-icon="mdi-cash-plus" title="Despesas" :to="{ path: '/despesas/cadastrar' }" />
+                <v-list-item prepend-icon="mdi-wallet" title="Orçamento" :to="{ path: '/orcamento' }" />
                 <v-list-item prepend-icon="mdi-logout" title="Sair" @click="logout" />
             </v-list>
         </v-navigation-drawer>

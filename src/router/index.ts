@@ -19,7 +19,8 @@ const routes = [
         path: '/despesas/cadastrar',
         component: CadastrarDespesasView,
         meta: { requiresAuth: true }
-      }
+      },
+      {path: '/orcamento', component: () => import('@/views/orcamento/OrcamentoMensal.vue'), meta: { requiresAuth: true } },
     ]
   },
   { path: '/dashboard', component: () => import('@/views/DashboardView.vue'), meta: { requiresAuth: true } },
