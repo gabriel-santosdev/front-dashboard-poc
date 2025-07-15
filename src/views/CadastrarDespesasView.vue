@@ -2,7 +2,7 @@
     <v-container>
         <h1 class="mb-6">Minhas Despesas</h1>
 
-        <!-- Botão para abrir modal de cadastro -->
+        <!-- Botão para active de cadastro de despesa-->
         <v-btn color="primary" class="mb-6" fab dark fixed top left @click="modalCadastrar = true"
             aria-label="Cadastrar Despesa">
             <span class="sr-only">Cadastrar Despesa</span>
@@ -10,11 +10,10 @@
         </v-btn>
 
         <!-- Modal Cadastro Despesa -->
-        <v-dialog v-model="modalCadastrar" max-width="500px" persistent>
+        <v-dialog v-model="modalCadastrar" max-width="500px" persistent theme="light">
             <v-card>
-                <v-card-title>
+                <v-card-title class="d-flex align-center justify-space-between">
                     <span class="headline">Cadastrar Despesa</span>
-                    <v-spacer></v-spacer>
                     <v-btn icon @click="modalCadastrar = false">
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
@@ -53,39 +52,42 @@
             </v-card>
         </v-dialog>
 
-
-        <v-data-table :items="despesasStore.despesas" :loading="despesasStore.loading" class="elevation-1" item-key="id"
-            theme="light" disable-sort>
+        <!-- Tabela de Despesas -->
+        <v-data-table :items="despesasStore.despesas" :loading="despesasStore.loading" item-key="id"
+            class="elevation-1 custom-table" theme="light" disable-sort :items-per-page="5">
 
             <template #headers>
                 <tr>
-                    <th v-for="header in headers" :key="header.value">{{ header.text }}</th>
+                    <th>Valor</th>
+                    <th>Conta Bancária</th>
+                    <th>Tipo</th>
+                    <th>Data</th>
+                    <th>Ações</th>
                 </tr>
             </template>
-            <template #item.valor="{ item }">
-                R$ {{ item.valor.toFixed(2).replace('.', ',') }}
-            </template>
-
-            <template #item.data="{ item }">
-                {{ formatDate(item.data) }}
-            </template>
-
-            <template #item.actions="{ item }">
-                <v-btn @click="openEdit(item)">
-                    <v-icon color="blue">mdi-pencil</v-icon>
-                </v-btn>
-                <v-btn @click="deleteDespesa(item.id)">
-                    <v-icon color="red">mdi-delete</v-icon>
-                </v-btn>
+            <template #item="{ item }">
+                <tr>
+                    <td>R$ {{ item.valor.toFixed(2).replace('.', ',') }}</td>
+                    <td>{{ item.conta }}</td>
+                    <td>{{ item.tipo }}</td>
+                    <td>{{ formatDate(item.data) }}</td>
+                    <td class="d-flex ga-1 text-center align-center">
+                        <v-btn size="small" @click="openEdit(item)">
+                            <v-icon color="blue">mdi-pencil</v-icon>
+                        </v-btn>
+                        <v-btn size="small" @click="deleteDespesa(item.id)">
+                            <v-icon color="red">mdi-delete</v-icon>
+                        </v-btn>
+                    </td>
+                </tr>
             </template>
         </v-data-table>
 
         <!-- Dialog Editar Despesa -->
-        <v-dialog v-model="modalEdit" max-width="500">
+        <v-dialog v-model="modalEdit" max-width="500" theme="light">
             <v-card>
-                <v-card-title>
+                <v-card-title class="d-flex align-center justify-space-between">
                     <span class="headline">Editar Despesa</span>
-                    <v-spacer></v-spacer>
                     <v-btn icon @click="modalEdit = false">
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
@@ -143,14 +145,6 @@ const tiposDespesa = ['Alimentação', 'Transporte', 'Lazer', 'Saúde', 'Outros'
 
 const modalSuccess = ref(false)
 
-// Tabela headers
-const headers = ref([
-    { text: 'Valor', key: 'valor' },
-    { text: 'Conta Bancária', key: 'conta' },
-    { text: 'Tipo', key: 'tipo' },
-    { text: 'Data', key: 'data' },
-    { text: 'Ações', key: 'actions' }
-])
 
 const formattedDate = computed(() =>
     date.value ? new Intl.DateTimeFormat('pt-BR').format(date.value) : ''
@@ -189,7 +183,6 @@ async function submit() {
     })
 
     if (despesasStore.error) {
-        // Pode mostrar uma snackbar ou alert
         console.error(despesasStore.error)
         return
     }
@@ -197,7 +190,7 @@ async function submit() {
     modalSuccess.value = true
     modalCadastrar.value = false
 
-    // Resetar campos
+    // Reset dos campos
     valor.value = null
     conta.value = null
     tipoDespesa.value = null
@@ -248,8 +241,32 @@ h1 {
     font-weight: 600;
 }
 
-/* Ajuste para botão flutuante no topo direito */
 .v-btn.fixed {
     z-index: 10;
+}
+
+.custom-table {
+    --v-theme-background: #fff;
+    border-radius: 12px
+}
+
+.custom-table th {
+    background-color: #f5f5f5;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 16px 12px;
+    color: #333;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.custom-table td {
+    font-size: 14px;
+    padding: 14px 12px;
+    color: #444;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.custom-table tr:hover td {
+    background-color: #f9f9f9;
 }
 </style>

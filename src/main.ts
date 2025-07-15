@@ -9,12 +9,17 @@ import { useAuthStore } from './stores/auth'
 import 'vuetify/styles'
 import '@mdi/font/css/materialdesignicons.css'
 import { createVuetify } from 'vuetify'
+import { pt }from 'vuetify/locale'
 import { aliases, mdi } from 'vuetify/iconsets/mdi'
 
 // Estilos adicionais, se necessário
 import 'unfonts.css'
 
 const vuetify = createVuetify({
+  locale:{
+    locale: 'pt',
+    messages: {pt}
+  },
   icons: {
     defaultSet: 'mdi',
     aliases,
