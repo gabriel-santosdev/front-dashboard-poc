@@ -41,7 +41,7 @@
         </v-dialog>
 
         <!-- Modal sucesso -->
-        <v-dialog v-model="modalSuccess" max-width="400">
+        <v-dialog v-model="modalSuccess" max-width="400" theme="light">
             <v-card>
                 <v-card-title class="headline">Despesa cadastrada</v-card-title>
                 <v-card-text>A despesa foi cadastrada com sucesso!</v-card-text>
